@@ -3,7 +3,6 @@ import aiohttp
 import time
 from concurrent.futures import ThreadPoolExecutor
 
-# Function to simulate blocking operations (for illustration)
 def simulate_blocking_operation(data):
     return data
 

@@ -102,7 +102,7 @@ async def get_all_users_lang(request):
                 status=400,
             )
 
-        users = await get_users()  # async bo'lsa await get_users() qiling.
+        users = await get_users()
         response_data = []
 
         for user in users:
