@@ -67,7 +67,7 @@ async def get_user_details(request, user_id):
 def get_users():
     return list(User.objects.all())
 
-@cache_page(60 * 15)
+# @cache_page(60 * 15)
 async def get_all_users(request):
     users = await get_users()
 
