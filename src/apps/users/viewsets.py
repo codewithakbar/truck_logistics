@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_page
 from django.middleware.csrf import get_token
 from django.forms.models import model_to_dict
 from django.views import View
@@ -66,6 +67,7 @@ async def get_user_details(request, user_id):
 def get_users():
     return list(User.objects.all())
 
+@cache_page(60 * 15)
 async def get_all_users(request):
     users = await get_users()
 

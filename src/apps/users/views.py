@@ -10,7 +10,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import get_user_model
-
+from django.views.decorators.cache import cache_page
 
 User = get_user_model()
 
@@ -62,6 +62,7 @@ def user_profile(request):
 
 
 # @login_required
+@cache_page(60 * 15)
 def user_list(request):
     users = User.objects.all()
     return render(request, "user_list.html", {"users": users})

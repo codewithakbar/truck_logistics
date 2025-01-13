@@ -6,3 +6,4 @@ django-jet
 django-suit
 django-grappelli
 djangorestframework-simplejwt
+django-redis

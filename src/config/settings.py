@@ -155,7 +155,26 @@ MEDIA_ROOT = os.path.join(BASE_DIR / "media")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",  # Redis server address and DB number
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            # Optional settings
+            "SOCKET_TIMEOUT": 5,  # seconds
+            "IGNORE_EXCEPTIONS": True,  # Fallback to the default cache on Redis failure
+        },
+        "KEY_PREFIX": "myapp",  # Optional key prefix
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+
 AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = 'user_list'
 LOGOUT_REDIRECT_URL = 'user_login' 
 LOGIN_URL = 'login'
+
