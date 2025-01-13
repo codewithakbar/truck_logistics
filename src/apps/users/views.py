@@ -52,7 +52,7 @@ def user_logout(request):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
 
 @login_required
@@ -61,7 +61,7 @@ def user_profile(request):
     return render(request, "user_profile.html", {"user": user})
 
 
-@login_required
+# @login_required
 def user_list(request):
     users = User.objects.all()
     return render(request, "user_list.html", {"users": users})
