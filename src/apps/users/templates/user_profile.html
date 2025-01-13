@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profile</title>
+</head>
+<body>
+    <h1>User Profile</h1>
+    <p>Username: {{ user.username }}</p>
+    <p>First Name: {{ user.first_name }}</p>
+    <p>Last Name: {{ user.last_name }}</p>
+    <p>Father Name: {{ user.father_name }}</p>
+    <p>Birthday Date: {{ user.birthday_date }}</p>
+    <p>Gender: {{ user.gender }}</p>
+    <p>Phone Number: {{ user.phone_number }}</p>
+    <p>User Type: {{ user.get_user_type_display }}</p>
+
+    <h2>{{ user.get_user_type_display }} specific content</h2>
+    {% if user.user_type == 'truck_driver' %}
+        <div style="background-color: lightblue; padding: 20px;">
+            <h3>Truck Driver Profile</h3>
+            <p>Additional truck driver related information can be displayed here</p>
+        </div>
+    {% elif user.user_type == 'dispatcher' %}
+        <div style="background-color: lightgreen; padding: 20px;">
+            <h3>Dispatcher Profile</h3>
+            <p>Additional dispatcher related information can be displayed here</p>
+        </div>
+    {% else %}
+         <div style="background-color: lightgrey; padding: 20px;">
+            <h3>Other User Type</h3>
+            <p>This is for other user types.</p>
+        </div>
+    {% endif %}
+    <br>
+    <a href="{% url 'user_list' %}">Back to User List</a>
+    <a href="{% url 'user_logout' %}">Logout</a>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+django
+pillow
+djangorestframework
+gunicorn
+django-jet
+django-suit
+django-grappelli
+djangorestframework-simplejwt
