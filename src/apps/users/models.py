@@ -22,7 +22,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username + ' | ' + self.first_name + ' | ' + self.last_name
-    
+
 
 class Profile(models.Model):
 
@@ -31,6 +31,7 @@ class Profile(models.Model):
 
     def __str__(self):
         return "Profil: " + self.user.username
-    
+
+
 
     

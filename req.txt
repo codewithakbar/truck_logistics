@@ -7,3 +7,4 @@ django-suit
 django-grappelli
 djangorestframework-simplejwt
 django-redis
+django-cors-headers
