@@ -1,25 +1,21 @@
-from rest_framework.permissions import BasePermission
-from rest_framework import permissions
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 
-class IsAdminOrDispatcher(BasePermission):
+class IsAdminOrDispatcherOrReadOnly(BasePermission):
     """
-    Custom permission to allow access only to admin users or users with 'dispatcher' user type
-    for all actions (POST, PUT, DELETE).
-    Non-admin, non-dispatcher users are restricted to read-only methods (GET, HEAD, OPTIONS).
+    Custom permission to allow access only to:
+    - Admin users (is_staff=True),
+    - Users with 'dispatcher' user type for all actions (POST, PUT, DELETE).
+    All other users are restricted to read-only methods (GET, HEAD, OPTIONS).
     """
     
     def has_permission(self, request, view):
+        # Allow read-only methods for any authenticated user
+        if request.method in SAFE_METHODS:
+            return True
+        
         # Check if the user is authenticated
         if not request.user.is_authenticated:
             return False
         
-        # If the request method is one of the safe methods (GET, HEAD, OPTIONS), allow it
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        
-        # Check if the user is an admin or has the 'dispatcher' user type for write operations
-        if request.user.is_staff or request.user.user_type == 'dispatcher':
-            return True
-        
-        # If the user is neither an admin nor a dispatcher, deny all write actions
-        return False
+        # Allow admin users or users with 'dispatcher' user type to perform write actions
+        return request.user.is_staff or getattr(request.user, 'user_type', None) == 'dispatcher'
