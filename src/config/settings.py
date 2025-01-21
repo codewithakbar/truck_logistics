@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "corsheaders",
 
     'apps.users.apps.UsersConfig',
+    'apps.home.apps.HomeConfig',
 ]
 
 MIDDLEWARE = [

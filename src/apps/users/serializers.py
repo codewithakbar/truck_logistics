@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import Profile, User
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 
@@ -30,3 +30,9 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ["user", "avatar"]

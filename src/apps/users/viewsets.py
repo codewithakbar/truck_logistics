@@ -18,7 +18,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import UserSerializer
 from asgiref.sync import sync_to_async
 
-@method_decorator(csrf_exempt, name='dispatch')
+
+@method_decorator(csrf_exempt, name="dispatch")
 class RegisterUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
@@ -67,6 +68,7 @@ async def get_user_details(request, user_id):
 def get_users():
     return list(User.objects.all())
 
+
 # @cache_page(60 * 15)
 async def get_all_users(request):
     users = await get_users()
@@ -80,7 +82,7 @@ async def get_all_users(request):
         }
         for user in users
     ]
-    
+
     return JsonResponse(data, safe=False)
 
 
@@ -100,7 +102,9 @@ async def get_all_users_lang(request):
 
         if lang not in ["uz", "ru", "en"]:
             return JsonResponse(
-                {"error": "Noto'g'ri til tanlandi. 'uz', 'ru' yoki 'en' qiymatlarini kiriting."},
+                {
+                    "error": "Noto'g'ri til tanlandi. 'uz', 'ru' yoki 'en' qiymatlarini kiriting."
+                },
                 status=400,
             )
 
@@ -116,9 +120,13 @@ async def get_all_users_lang(request):
             }
 
             if lang == "uz":
-                user_data["uz_message"] = f"Assalomu alaykum {user.first_name} {user.last_name}!"
+                user_data["uz_message"] = (
+                    f"Assalomu alaykum {user.first_name} {user.last_name}!"
+                )
             elif lang == "ru":
-                user_data["ru_message"] = f"Здравствуйте {user.first_name} {user.last_name}!"
+                user_data["ru_message"] = (
+                    f"Здравствуйте {user.first_name} {user.last_name}!"
+                )
             elif lang == "en":
                 user_data["en_message"] = f"Hello {user.first_name} {user.last_name}!"
 
