@@ -4,21 +4,29 @@ from apps.home.models import Products
 import random
 
 class Command(BaseCommand):
-    help = "Generate fake products for testing"
+    help = "Generate fake products for testing with Uzbekistan-specific data"
 
     def handle(self, *args, **kwargs):
         # Initialize Faker instance
         fake = Faker()
 
+        # O‘zbekiston shaharlarining ro‘yxati
+        uzbek_cities = [
+            "Toshkent", "Samarqand", "Buxoro", "Andijon", "Namangan",
+            "Farg‘ona", "Xiva", "Urganch", "Qo‘qon", "Navoiy",
+            "Qarshi", "Termiz", "Guliston", "Jizzax", "Nukus",
+            "Chirchiq", "Angren", "Bekobod", "Olmaliq", "Marg‘ilon"
+        ]
+
         # Number of products to create
         num_products = 50  # You can adjust this number
 
         for _ in range(num_products):
-            # Generate fake data
+            # Generate fake Uzbek-specific data
             email = fake.email()
-            phone = fake.phone_number()
-            olib_ketish = fake.city()
-            tashlab_ketish = fake.city()
+            phone = f"+998{random.randint(90, 99)}{random.randint(1000000, 9999999)}"  # Uzbek phone format
+            olib_ketish = random.choice(uzbek_cities)
+            tashlab_ketish = random.choice(uzbek_cities)
             yuk_turi = fake.word()
             yuk_vazni = random.randint(1, 100)  # Random weight in tons
             yuk_hajmi = random.randint(1, 100)  # Random volume in m3
@@ -27,7 +35,7 @@ class Command(BaseCommand):
             uzunlik = random.randint(1, 20)
             kenglik = random.randint(1, 10)
             balandlik = random.randint(1, 10)
-            price = random.randint(1000, 100000)  # Random price
+            price = random.randint(1000000, 100000000)  # Price in UZS
             price_type = random.choice(["uzs", "usd", "eur"])  # Random currency type
 
             # Create and save the product
@@ -50,4 +58,4 @@ class Command(BaseCommand):
 
             product.save()
 
-        self.stdout.write(self.style.SUCCESS(f"{num_products} products created successfully!"))
+        self.stdout.write(self.style.SUCCESS(f"{num_products} products created successfully with Uzbekistan-specific data!"))
