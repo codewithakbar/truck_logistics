@@ -28,6 +28,7 @@ class Products(models.Model):
     price = models.IntegerField()
     price_type = models.CharField(max_length=30, choices=CURRENCY_TYPE, default="uzs")
 
+    
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

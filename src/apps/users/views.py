@@ -5,14 +5,61 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from rest_framework import viewsets, permissions
-from .serializers import UserSerializer
+from rest_framework.views import APIView
+from .serializers import (
+    CustomAuthTokenSerializer,
+    MyTokenObtainPairSerializer,
+    UserSerializer,
+)
+from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import get_user_model
 from django.views.decorators.cache import cache_page
 
 User = get_user_model()
+
+
+class CustomAuthToken(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = CustomAuthTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data["user"]
+        token, created = Token.objects.get_or_create(user=user)
+
+        return Response(
+            {
+                "token": token.key,
+                "user_id": user.id,
+            }
+        )
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        tokens = serializer.validated_data
+        user = serializer.user
+
+        response_data = {
+            "refresh": tokens["refresh"],
+            "access": tokens["access"],
+            "user": {
+                "id": user.id,
+                "full_name": f"{user.first_name} {user.last_name}",
+                "username": user.username,
+                "user_role": user.user_type,
+                "email": user.email,
+            },
+        }
+        return Response(response_data)
 
 
 @api_view(["POST"])
