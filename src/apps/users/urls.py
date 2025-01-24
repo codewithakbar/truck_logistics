@@ -32,10 +32,14 @@ urlpatterns = [
     path("user/<int:user_id>/", get_user_details, name="get_user_details"),
     path("users/", get_all_users, name="get_all_users"),
     path("lang/users/", get_all_users_lang, name="get_all_users_lang"),
-    
+
     path("api/register/", RegisterUserView.as_view(), name="register"),
     path("api/login/", views.MyTokenObtainPairView.as_view(), name="login"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/dashboard/", DashboardView.as_view(), name="api_dashboard"),
     path("api/logout/", LogoutView.as_view(), name="api_logout"),
+
+    path('api/user/update/', views.UpdateUserView.as_view(), name='update-user'),
+    path('api/profile/update/', views.UpdateProfileView.as_view(), name='update-profile'),
+
 ]

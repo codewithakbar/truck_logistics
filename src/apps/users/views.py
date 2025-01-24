@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import User
+from .models import User, Profile
 from .forms import UserForm, UserUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from .serializers import (
     CustomAuthTokenSerializer,
     MyTokenObtainPairSerializer,
+    ProfileSerializer,
     UserSerializer,
 )
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -16,6 +17,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.generics import UpdateAPIView
 from django.contrib.auth import get_user_model
 from django.views.decorators.cache import cache_page
 
@@ -65,6 +67,24 @@ class MyTokenObtainPairView(TokenObtainPairView):
             },
         }
         return Response(response_data)
+
+
+class UpdateUserView(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+
+class UpdateProfileView(UpdateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user.profile
 
 
 @api_view(["POST"])

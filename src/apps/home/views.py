@@ -19,6 +19,10 @@ class ProductsViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         search_query = self.request.query_params.get("s", None)
+
+        olib_ketish = self.request.query_params.get("olib_ketish", None)
+        tashlab_ketish = self.request.query_params.get("tashlab_ketish", None)
+
         if search_query:
             queryset = queryset.filter(
                 Q(olib_ketish__icontains=search_query)
@@ -27,6 +31,12 @@ class ProductsViewSet(viewsets.ModelViewSet):
                 | Q(phone__icontains=search_query)
                 | Q(email__icontains=search_query)
             )
+        
+        if olib_ketish:
+            queryset = queryset.filter(olib_ketish__icontains=olib_ketish)
+        if tashlab_ketish:
+            queryset = queryset.filter(tashlab_ketish__icontains=tashlab_ketish)
+            
         return queryset
 
     def retrieve(self, request, *args, **kwargs):
