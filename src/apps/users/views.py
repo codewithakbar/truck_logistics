@@ -54,9 +54,14 @@ class MyTokenObtainPairView(TokenObtainPairView):
             "user": {
                 "id": user.id,
                 "full_name": f"{user.first_name} {user.last_name}",
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "father_name": user.father_name,
+                "birthday_date": user.birthday_date,
+                "gender": user.gender,
                 "username": user.username,
                 "user_role": user.user_type,
-                "email": user.email,
+                "phone_number": user.phone_number,
             },
         }
         return Response(response_data)
