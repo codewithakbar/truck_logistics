@@ -9,11 +9,25 @@ from .serializers import ProductsSerializer
 from .permissions import IsAdminOrDispatcherOrReadOnly
 
 
+
 class ProductsViewSet(viewsets.ModelViewSet):
     queryset = Products.objects.all()
     serializer_class = ProductsSerializer
     permission_classes = [IsAdminOrDispatcherOrReadOnly]
     pagination_class = CustomPageNumberPagination
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_query = self.request.query_params.get("s", None)
+        if search_query:
+            queryset = queryset.filter(
+                Q(olib_ketish__icontains=search_query)
+                | Q(tashlab_ketish__icontains=search_query)
+                | Q(yuk_turi__icontains=search_query)
+                | Q(phone__icontains=search_query)
+                | Q(email__icontains=search_query)
+            )
+        return queryset
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()

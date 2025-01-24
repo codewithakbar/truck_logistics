@@ -14,3 +14,4 @@ class ProductsSerializer(serializers.ModelSerializer):
             representation["price"] = f"{representation['price']:,}".replace(",", " ")
 
         return representation
+    
